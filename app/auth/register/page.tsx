@@ -2,26 +2,26 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import { login, loginWithCredentials } from "@/lib/auth";
+import { login } from "@/lib/auth";
+import { registerUser } from "@/lib/register";
 
-export default function SignInPage() {
-    const [state, formAction, pending] = useActionState(loginWithCredentials, undefined);
+export default function RegisterPage() {
+    const [state, formAction, pending] = useActionState(registerUser, undefined);
 
     return (
         <div className="min-h-[calc(100vh-10rem)] flex items-center justify-center ">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg mx-4">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                        Welcome to JobList
+                        Create your account
                     </h2>
                     <p className="text-gray-600">
-                        Sign in to post jobs or apply for opportunities
+                        Join JobList to post jobs or apply for opportunities
                     </p>
                 </div>
 
                 <div className="mt-8">
                     <button
-
                         onClick={login}
                         className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200"
                     >
@@ -43,7 +43,7 @@ export default function SignInPage() {
 
                 <div className="mt-6 flex items-center gap-3">
                     <div className="flex-1 h-px bg-gray-200" />
-                    <span className="text-sm text-gray-400">or sign in with email</span>
+                    <span className="text-sm text-gray-400">or register with email</span>
                     <div className="flex-1 h-px bg-gray-200" />
                 </div>
 
@@ -51,6 +51,21 @@ export default function SignInPage() {
                     {state?.error && (
                         <p className="text-sm text-red-600">{state.error}</p>
                     )}
+
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                            Full name
+                        </label>
+                        <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            autoComplete="name"
+                            required
+                            placeholder="Jane Doe"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                    </div>
 
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -75,7 +90,22 @@ export default function SignInPage() {
                             id="password"
                             name="password"
                             type="password"
-                            autoComplete="current-password"
+                            autoComplete="new-password"
+                            required
+                            placeholder="••••••••"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                            Confirm password
+                        </label>
+                        <input
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            autoComplete="new-password"
                             required
                             placeholder="••••••••"
                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
@@ -87,19 +117,19 @@ export default function SignInPage() {
                         disabled={pending}
                         className="w-full px-4 py-2.5 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-colors duration-200 disabled:opacity-60"
                     >
-                        {pending ? "Signing in..." : "Sign In"}
+                        {pending ? "Creating account..." : "Create account"}
                     </button>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/auth/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
-                        Register
+                    Already have an account?{" "}
+                    <Link href="/auth/sigin" className="text-indigo-600 hover:text-indigo-500 font-medium">
+                        Sign in
                     </Link>
                 </p>
 
                 <div className="mt-6 text-center text-sm text-gray-500">
-                    By signing in, you agree to our{" "}
+                    By registering, you agree to our{" "}
                     <a href="#" className="text-indigo-600 hover:text-indigo-500">
                         Terms of Service
                     </a>{" "}

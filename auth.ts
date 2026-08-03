@@ -4,9 +4,11 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials"
 import { PrismaClient } from "@/app/generated/prisma/client"
+import { PrismaNeon } from "@prisma/adapter-neon"
 
 
-const prisma = new PrismaClient()
+const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL })
+const prisma = new PrismaClient({ adapter })
 export const { auth, handlers, signIn, signOut } = NextAuth({
     session: {
         strategy: 'jwt',

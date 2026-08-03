@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
+import DeleteButton from "./DeleteButton";
 
 
 
@@ -105,6 +106,8 @@ export default async function DashboardPage() {
                                         >
                                             View Job
                                         </Link>
+
+                                        <DeleteButton jobId={job.id} />
                                     </div>
                                 </div>
                             ))

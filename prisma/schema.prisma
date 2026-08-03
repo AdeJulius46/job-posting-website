@@ -90,7 +90,7 @@ model Application {
   status    String   @default("PENDING")
   appliedAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
-  job       Job      @relation(fields: [jobId], references: [id])
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jobId])
 }

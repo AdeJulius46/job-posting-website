@@ -19,10 +19,11 @@ export default function DeleteButton({ jobId }: { jobId: string }) {
             if (response.ok) {
                 router.refresh();
                 alert("Job to deleted");
-
+            } else {
+                setLoading(false);
+                alert("Failed to delete job");
             }
-        } catch (error) {
-
+        } catch {
             setLoading(false);
             alert("Failed to delete job");
         }

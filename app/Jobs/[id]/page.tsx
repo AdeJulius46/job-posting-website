@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import ApplyButton from "./ApplyButton";
 
 
@@ -16,9 +17,7 @@ export default async function Jobpage({ params, }: { params: Promise<{ id: strin
     });
 
     if (!job) {
-        return {
-            notFound: true
-        }
+        notFound();
     }
 
 

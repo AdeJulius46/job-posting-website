@@ -1,10 +1,14 @@
 "use client"
 
+import { Suspense } from "react";
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { login, loginWithCredentials } from "@/lib/auth";
 
-export default function SignInPage() {
+function SignInForm() {
+    const searchParams = useSearchParams();
+    const justVerified = searchParams.get("verified") === "1";
     const [state, formAction, pending] = useActionState(loginWithCredentials, undefined);
 
     return (
@@ -18,6 +22,12 @@ export default function SignInPage() {
                         Sign in to post jobs or apply for opportunities
                     </p>
                 </div>
+
+                {justVerified && (
+                    <p className="mt-4 text-sm text-center text-green-600 bg-green-50 rounded-lg py-2">
+                        Email verified — you can sign in now.
+                    </p>
+                )}
 
                 <div className="mt-8">
                     <button
@@ -49,7 +59,20 @@ export default function SignInPage() {
 
                 <form action={formAction} className="mt-6 space-y-4">
                     {state?.error && (
-                        <p className="text-sm text-red-600">{state.error}</p>
+                        <p className="text-sm text-red-600">
+                            {state.error}
+                            {state.unverifiedEmail && (
+                                <>
+                                    {" "}
+                                    <Link
+                                        href={`/auth/verify?email=${encodeURIComponent(state.unverifiedEmail)}`}
+                                        className="underline hover:text-red-700"
+                                    >
+                                        Resend code
+                                    </Link>
+                                </>
+                            )}
+                        </p>
                     )}
 
                     <div>
@@ -110,5 +133,13 @@ export default function SignInPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function SignInPage() {
+    return (
+        <Suspense fallback={null}>
+            <SignInForm />
+        </Suspense>
     );
 }

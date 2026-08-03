@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import { signIn } from "@/auth"
 import { AuthError } from "next-auth";
 import { prisma } from "@/lib/prisma";
+import { createAndSendVerificationPin } from "./otp";
 
 
 
@@ -41,7 +42,8 @@ export const registerUser = async (
         }
     })
     try {
-        await signIn("credentials", { email, password, redirectTo: "/auth/signin" })
+        await createAndSendVerificationPin(email)
+        await signIn("credentials", { email, password, redirectTo: `/auth/verify?email=${encodeURIComponent(email)}` })
 
     } catch (error) {
         if (error instanceof AuthError) {

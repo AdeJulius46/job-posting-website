@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from "@/auth"
 import { AuthError } from "next-auth";
+import { prisma } from "./prisma";
 
 
 
@@ -18,6 +19,17 @@ export const loginWithCredentials = async (
     _prevState: { error?: string } | undefined,
     formData: FormData
 ) => {
+    const email = formData.get("email") as string;
+    // const password = formData.get("password") as string;
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user?.password && !user.emailVerified) {
+        return {
+            error: "Please verify your email before signing in.",
+            unverifiedEmail: email,
+        };
+    }
+
     try {
         await signIn("credentials", {
             email: formData.get("email"),
